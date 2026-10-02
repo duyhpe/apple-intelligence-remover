@@ -21,12 +21,12 @@ CACHE_PATHS=(
 FOUND_PATHS=()
 
 echo
-echo "Apple Intelligence Remover"
+echo "Gỡ bỏ Apple Intelligence"
 echo "--------------------------------------"
 echo
 
 check_status() {
-echo "Checking Apple Intelligence status..."
+echo "Đang kiểm tra trạng thái Apple Intelligence ..."
 STATUS=$(defaults read com.apple.Siri AppleIntelligenceEnabled 2>/dev/null || echo "0")
 
 if [[ "$STATUS" == "1" ]]; then
@@ -39,7 +39,7 @@ echo
 
 scan_models() {
 
-echo "Scanning for AI model files..."
+echo "Đang quét tệp mô hình AI ..."
 echo
 
 FOUND_PATHS=()
@@ -61,9 +61,9 @@ fi
 done
 
 if [[ ${#FOUND_PATHS[@]} -eq 0 ]]; then
-echo "No removable files found."
+echo "Không có file tìm thấy."
 else
-echo "Total size:"
+echo "Tổng dung lượng:"
 echo $TOTAL_SIZE | awk '{ printf "%.2f GB\n", $1/1024/1024/1024 }'
 fi
 
@@ -71,7 +71,7 @@ echo
 }
 
 disable_ai() {
-echo "Disabling Apple Intelligence..."
+echo "Đang hủy kích hoạt Apple Intelligence..."
 
 defaults write com.apple.Siri AppleIntelligenceEnabled -bool false
 defaults write com.apple.Siri LLMEnable -bool false
@@ -83,30 +83,30 @@ echo
 remove_models() {
 
 if [[ ${#FOUND_PATHS[@]} -eq 0 ]]; then
-echo "Nothing to remove."
+echo "Không có gì xóa bỏ."
 return
 fi
 
 echo
-echo "The following directories will be removed:"
+echo "Danh mục sẽ gỡ bỏ:"
 printf '%s\n' "${FOUND_PATHS[@]}"
 echo
 
-read -p "Continue? (y/N): " CONFIRM
+read -p "Tiếp tục? (y/N): " CONFIRM
 
 if [[ "$CONFIRM" != "y" ]]; then
-echo "Cancelled."
+echo "Đã hủy."
 return
 fi
 
 for path in "${FOUND_PATHS[@]}"
 do
-echo "Removing $path"
+echo "Đang xóa $path"
 
 if sudo rm -rf "$path" 2>/dev/null; then
-echo "Removed."
+echo "Đã xóa."
 else
-echo "Could not remove (likely SIP protected)."
+echo "Không thể xóa (có bảo vệ SIP )."
 fi
 
 echo
@@ -117,38 +117,38 @@ generate_recovery_script() {
 
 SCRIPT="$HOME/Desktop/remove_apple_intelligence.sh"
 
-echo "Generating recovery script..."
+echo "Đang tạọ recovery script..."
 
 cat <<EOF > "$SCRIPT"
 #!/bin/bash
 
-echo "Apple Intelligence Removal"
+echo "Gỡ bỏ Apple Intelligence"
 
 diskutil mount "Macintosh HD - Data" 2>/dev/null || diskutil mount "Data"
 
 rm -rf /Volumes/Data/System/Library/AssetsV2/com_apple_MobileAsset_UAF_FM_GenerativeModels
 rm -rf /Volumes/Data/System/Library/AssetsV2/com_apple_MobileAsset_UAF_FM_Visual
 
-echo "Done."
+echo "Hoàn thành."
 EOF
 
 chmod +x "$SCRIPT"
 
-echo "Saved to:"
+echo "Lưu vào:"
 echo "$SCRIPT"
 echo
 }
 
 menu() {
 
-echo "Select an option:"
+echo "Lựa chọn:"
 echo
-echo "1) Check Apple Intelligence status"
-echo "2) Scan for AI models"
-echo "3) Disable Apple Intelligence"
-echo "4) Remove model files"
-echo "5) Generate Recovery script"
-echo "6) Exit"
+echo "1) Kiểm tra trạng thái Apple Intelligence 
+echo "2) Quét mô hiình AI Scan"
+echo "3) Hủy kích hoạt Apple Intelligence"
+echo "4) Xóa file mô hình AI"
+echo "5) Tạo Recovery script"
+echo "6) Thoát"
 echo
 
 read -p "Choice: " CHOICE
