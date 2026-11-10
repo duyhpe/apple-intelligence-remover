@@ -143,7 +143,7 @@ menu() {
 
 echo "Lựa chọn:"
 echo
-echo "1) Kiểm tra trạng thái Apple Intelligence 
+echo "1) Kiểm tra trạng thái Apple Intelligence "
 echo "2) Quét mô hiình AI Scan"
 echo "3) Hủy kích hoạt Apple Intelligence"
 echo "4) Xóa file mô hình AI"
